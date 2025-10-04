@@ -7,7 +7,7 @@ function App() {
   const [message, setMessage] = useState('Loading...');
 
   useEffect(() => {
-    // ⚠️ CHIAMATA AL BACKEND sulla porta 4000
+    // chiama il backend
     fetch('http://localhost:4000/') 
       .then(response => response.json())
       .then(data => setMessage(data.message))
