@@ -4,7 +4,7 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import 'dotenv/config'; 
-// da finire gli import
+// da finire gli import di rotte, modelli ecc
 
 // Correzione 1: Rimuovi la riga 'require', in quanto express è già importato sopra.
 // const express = require('express'); 
