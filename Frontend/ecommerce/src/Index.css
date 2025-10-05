@@ -1,7 +1,15 @@
+/* src/index.css */
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  padding: 0;
+  margin: 0;
+  max-width: 100vw;
+  
+  /* Rimosso 'width: 100%' da :root, è gestito da #root e body */
+  /* width: 100%; */ 
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -11,6 +19,11 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* 💡 CORREZIONE: Aggiunto #root per garantire la larghezza completa al contenitore di React */
+#root {
+  width: 100%; 
 }
 
 a {
@@ -24,10 +37,14 @@ a:hover {
 
 body {
   margin: 0;
+  width: 100%; /* Giusto, garantisce che il body copra la larghezza del viewport */
   display: flex;
-  place-items: center;
+  flex-direction: column; /* Giusto, allinea il contenuto dall'alto verso il basso */
+  /* Le righe place-items/align-items sono state commentate correttamente */
+  /* align-items: stretch; */
+  /* place-items: center; */
   min-width: 320px;
-  min-height: 100vh;
+  min-height: 100vh; /* Giusto, garantisce che il contenuto parta dall'alto */
 }
 
 h1 {
