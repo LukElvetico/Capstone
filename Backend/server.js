@@ -26,11 +26,11 @@ const PORT = process.env.PORT || 4000;
 //const allowedOrigin = 'https:vercel.ecc'
 // CORS
 const corsOptions = {
-    // origine
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173', // SOSTITUIRE CON PORT DA .ENV //alterntiva: origin: process.env.FRONTEND_URL || 'http://localhost:5173',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // per cookie/headers di autenticazione
-    optionsSuccessStatus: 204
+  // origine
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173', // SOSTITUIRE CON PORT DA .ENV //alterntiva: origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // per cookie/headers di autenticazione
+  optionsSuccessStatus: 204
 };
 
 // middlewares
@@ -42,7 +42,7 @@ app.use(express.json());
 
 // Rotta di benvenuto
 app.get('/', (req, res) => {
-    res.json({ message: "Il Backend è online" });
+  res.json({ message: "Il Backend è online" });
 });
 
 // Rotte per l'Autenticazione (/api/register, /api/login, /api/logout)
@@ -60,25 +60,24 @@ app.use('/api/cart', cartRouter);
 // Start server
 
 const startServer = async () => {
-    try {
-        // connessione mongo da env
-        // Qui usiamo la variabile d'ambiente corretta MONGODB_URI
-        await mongoose.connect(MONGODB_URI);
-    
-        // verifica
-        console.log("Server correttamente collegato al database"); 
+  try {
+    // connessione mongo da env
+    // Qui usiamo la variabile d'ambiente corretta MONGODB_URI
+   await mongoose.connect(MONGODB_URI);  
+    // verifica
+    console.log("Server correttamente collegato al database"); 
 
-        // avvio express
-        app.listen(PORT, () => {
-            console.log(`Il server è online sulla porta ${PORT}`);
-        });
+    // avvio express
+    app.listen(PORT, () => {
+      console.log(`Il server è online sulla porta ${PORT}`);
+    });
 
-    } catch (err) {
-        // errore
-        console.error("❌ ERRORE CRITICO: Impossibile connettersi al database.");
-        console.error(err.message);
-        process.exit(1);
-    }
+  } catch (err) {
+    // errore
+    console.error("❌ ERRORE CRITICO: Impossibile connettersi al database.");
+    console.error(err.message);
+    process.exit(1);
+  }
 };
 
 
