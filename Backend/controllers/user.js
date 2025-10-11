@@ -1,15 +1,13 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js'; // Assicurati che il percorso sia corretto
+import User from '../models/User.js'; 
 
-const JWT_SECRET = process.env.JWT_SECRET || 'jwt_secret_placeholder'; // Usare il valore da .env!
+const JWT_SECRET = process.env.JWT_SECRET || 'jwt_secret_placeholder'; 
 
-
-export const protect = async (req, res, next) => {
+export const authenticateUser = async (req, res, next) => {
     let token;
 
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
-            // Estrai il token: elimina "Bearer "
             token = req.headers.authorization.split(' ')[1];
 
             const decoded = jwt.verify(token, JWT_SECRET);
