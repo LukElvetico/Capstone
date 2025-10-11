@@ -1,7 +1,7 @@
 @base_url = http://localhost:4000
 @auth_token = your_actual_auth_token_here
 @product_id_to_add = 60d5ec49f10c1f00150d1a4c 
-# Sostituisci con un altro ID prodotto valido
+# da sostituire con ID prodotto valido
 
 ### 1. Aggiungi un articolo al carrello (POST /api/cart/items)
 # Si può aggiungere un prodotto base o un prodotto configurato

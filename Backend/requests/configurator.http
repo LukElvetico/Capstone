@@ -1,6 +1,6 @@
 @base_url = http://localhost:4000
 @product_id_example = 60d5ec49f10c1f00150d1a4b 
-# Sostituisci con un ID valido del tuo MongoDB
+# Sosituire con id valido
 
 ### 1. Lista di tutti i prodotti (GET /api/products)
 GET {{base_url}}/api/products

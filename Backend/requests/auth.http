@@ -3,8 +3,7 @@
 @user_password = PasswordSicura123
 @auth_token = 
 
-### 1. Registrazione di un nuovo utente (POST /api/register)
-# Eseguire questa richiesta una volta sola per creare l'utente
+### 1. Registrazione (POST /api/register)
 POST {{base_url}}/api/register
 Content-Type: application/json
 
@@ -14,10 +13,8 @@ Content-Type: application/json
     "password": "{{user_password}}"
 }
 
----
-
-### 2. Login dell'utente (POST /api/login)
-# Se ha successo, la riga successiva salverà il token.
+--- 
+### 2. Login (POST /api/login)
 POST {{base_url}}/api/login
 Content-Type: application/json
 
@@ -26,11 +23,9 @@ Content-Type: application/json
     "password": "{{user_password}}"
 }
 
-#  salva token
-@auth_token = {{$response.body.token}}
+@auth_token = {{$response.body.token}} 
 
 ---
-
-### 3. Logout dell'utente (POST /api/logout) che ichiede il token salvato dalla richiesta di Login
+### 3. Logout (POST /api/logout)
 POST {{base_url}}/api/logout
 Authorization: Bearer {{auth_token}}
