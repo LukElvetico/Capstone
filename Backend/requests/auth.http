@@ -1,0 +1,37 @@
+@base_url = http://localhost:4000
+@user_email = test@example.com
+@user_password = PasswordSicura123
+@auth_token = 
+
+### 1. Registrazione di un nuovo utente (POST /api/register)
+# Eseguire questa richiesta una volta sola per creare l'utente
+POST {{base_url}}/api/register
+Content-Type: application/json
+
+{
+    "username": "UtenteTest",
+    "email": "{{user_email}}",
+    "password": "{{user_password}}"
+}
+
+---
+
+### 2. Login dell'utente (POST /api/login)
+# Esegui questa richiesta. Se ha successo, la riga successiva salverà il token.
+POST {{base_url}}/api/login
+Content-Type: application/json
+
+{
+    "email": "{{user_email}}",
+    "password": "{{user_password}}"
+}
+
+# 🔑 DEVE essere posizionata SUBITO DOPO la richiesta di Login per salvare il token
+@auth_token = {{response.body.token}} 
+
+---
+
+### 3. Logout dell'utente (POST /api/logout)
+# Richiede il token salvato dalla richiesta di Login
+POST {{base_url}}/api/logout
+Authorization: Bearer {{auth_token}}
