@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-// --- SUB-SCHEMA 1: Definizione della singola scelta con il suo costo ---
+// SUB-SCHEMA 1: Definizione della singola scelta con il suo costo > GESTIONE COSTO DA IMPLEMENTARE/FINIRE
 const ChoiceSchema = new mongoose.Schema({
     value: { // Es: "S", "L", "8GB", "Rosso"
         type: String,
@@ -10,14 +10,13 @@ const ChoiceSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    // Campo usato per la logica di interconnessione (vedi sotto)
-    // Non strettamente necessario in Mongoose, ma utile per il Frontend/Backend
+    // Campo usato per la logica di interconnessione forse non necessario in Mongoose, ma utile per il Frontend/Backend
     relatedOptionId: {
         type: String, // ID o nome dell'opzione che questo elemento sblocca/blocca
     }
 }, { _id: false });
 
-// --- SUB-SCHEMA 2: Definizione di un Gruppo di Opzioni (es. "RAM", "Colore") ---
+// SUB-SCHEMA 2: Definizione di un Gruppo di Opzioni (es. "RAM", "Colore") ---
 const OptionGroupSchema = new mongoose.Schema({
     name: { // Es: "Modello", "RAM", "Archiviazione", "Colore"
         type: String,
@@ -31,7 +30,7 @@ const OptionGroupSchema = new mongoose.Schema({
 }, { _id: false });
 
 
-// --- SCHEMA PRINCIPALE: ProductSchema ---
+// SCHEMA PRINCIPALE: ProductSchema 
 const ProductSchema = new mongoose.Schema({
     name: { // Es: "Cellphone", "Hyperwatch", "Doc"
         type: String,
@@ -53,7 +52,7 @@ const ProductSchema = new mongoose.Schema({
     // Array di tutti i gruppi di opzioni configurabili
     optionGroups: [OptionGroupSchema], 
     
-    // Logica di Interconnessione (Cruciale per i tuoi requisiti)
+    // Logica di Interconnessione
     // Definizione le regole di esclusione/inclusione a livello di prodotto.
     // Es: "Se model:S, = ram:16GB è escluso"
     compatibilityRules: {

@@ -1,9 +1,3 @@
-/**
- * File: cart.router.js
- * Descrizione: Rotte per la gestione del Carrello e del Checkout.
- * Rif. PDF: /api/cart/items (POST), /api/cart (GET), /api/checkout (POST)
- */
-
 import express from 'express';
 const router = express.Router();
 // Importa il middleware per la verifica dell'autenticazione (Placeholder)
