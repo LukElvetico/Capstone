@@ -1,8 +1,0 @@
-@base_url = http://localhost:4000
-@auth_token = your_actual_token_here
-# inserire manualmente il token se la variabile non è disponibile
-
-### 1. Ottenere i dettagli del proprio account (GET /api/users/me)
-# DEVE essere eseguito DOPO il login in auth.http
-GET {{base_url}}/api/users/me
-Authorization: Bearer {{auth_token}}
