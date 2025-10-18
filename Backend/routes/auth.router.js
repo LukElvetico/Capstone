@@ -1,24 +1,13 @@
-import express from 'express';  
+import express from 'express';  
 const router = express.Router();
-// Importa il controller per l'autenticazione (Placeholder)
-// const authController = require('../controllers/auth.controller'); 
 
-// Rotta per la registrazione di un nuovo utente Metodo HTTP: POST | Endpoint: /api/register
-router.post('/register', (req, res) => {
-    // authController.register(req, res);
-    res.send({ message: 'Placeholder per la Registrazione' });
-});
+import { registerUser, loginUser, logoutUser } from '../controllers/auth.controller.js'; 
+import { protect } from '../middleware/auth.middleware.js'; 
 
-// Rotta per l'accesso (Login) Metodo HTTP: POST | Endpoint: /api/login
-router.post('/login', (req, res) => {
-    // authController.login(req, res);
-    res.send({ message: 'Placeholder per il Login' });
-});
+router.post('/register', registerUser);
 
-// Rotta per il Logout Metodo HTTP: POST | Endpoint: /api/logout
-router.post('/logout', (req, res) => {
-    // authController.logout(req, res);
-    res.send({ message: 'Placeholder per il Logout' });
-});
+router.post('/login', loginUser);
+
+router.post('/logout', protect, logoutUser); 
 
 export default router;

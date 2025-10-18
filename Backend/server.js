@@ -2,74 +2,61 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import 'dotenv/config'; 
+
+import { notFound, errorHandler } from './middleware/error.middleware.js'; 
+
 import authRouter from './routes/auth.router.js';
 import userRouter from './routes/user.router.js';
 import productRouter from './routes/product.router.js';
 import cartRouter from './routes/cart.router.js';
 import postRouter from './routes/post.router.js'; 
-// da finire gli import di rotte, modelli ecc
+import orderRouter from './routes/order.router.js';     
+import commentRouter from './routes/comment.router.js';
 
-// start express
 const app = express();
 
 const MONGODB_URI = process.env.MONGODB_URI; 
 const PORT = process.env.PORT || 4000;
 
 const corsOptions = {
- // origine
- origin: process.env.FRONTEND_URL || 'http://localhost:5173', // SOSTITUIRE CON PORT DA .ENV //alterntiva: origin: process.env.FRONTEND_URL || 'http://localhost:5173',
- methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
- credentials: true, // per cookie/headers di autenticazione
- optionsSuccessStatus: 204
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173', 
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204
 };
 
-// middlewares
 app.use(cors(corsOptions));
 app.use(express.json()); 
-// da finire
 
-// Rotte (Definizione degli endpoint API)
-
-// Rotta di benvenuto
 app.get('/', (req, res) => {
- res.json({ message: "Il Backend è online" });
+    res.json({ message: "Il Backend è online e funzionante!" });
 });
 
-// Rotte per l'Autenticazione (/api/register, /api/login, /api/logout)
-app.use('/api', authRouter); 
-
-// Rotte per gli Utenti (/api/users/me)
+app.use('/api/auth', authRouter); 
 app.use('/api/users', userRouter); 
-
-// Rotte per Prodotti e Configuratore (/api/products/:id, /api/configurator)
 app.use('/api/products', productRouter); 
-
-// Rotte per Carrello e Checkout (/api/cart, /api/cart/items, /api/checkout)
 app.use('/api/cart', cartRouter);
-
-//Rotte per i Post della Community (/api/posts, /api/posts/:id)
+app.use('/api/orders', orderRouter); 
 app.use('/api/posts', postRouter); 
+app.use('/api/comments', commentRouter); 
 
-// Start server
+app.use(notFound);
+app.use(errorHandler);
 
 const startServer = async () => {
- try {
-  // connessione mongo da env
- await mongoose.connect(MONGODB_URI);  
-  console.log("Server correttamente collegato al database"); 
+    try {
+        await mongoose.connect(MONGODB_URI);  
+        console.log("Server correttamente collegato al database MongoDB"); 
 
-//express
-  app.listen(PORT, () => {
-   console.log(`Il server è online sulla porta ${PORT}`);
-  });
+        app.listen(PORT, () => {
+            console.log(`Il server è online sulla porta ${PORT}`);
+        });
 
- } catch (err) {
-  // errore
-  console.error("❌ ERRORE CRITICO: Impossibile connettersi al database.");
-  console.error(err.message);
-  process.exit(1);
- }
+    } catch (err) {
+        console.error("Impossibile connettersi al database.");
+        console.error(err.message);
+        process.exit(1);
+    }
 };
-
 
 startServer();

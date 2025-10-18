@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
-    // Usiamo l'email come identificativo univoco (username implicito)
+
     email: {
         type: String,
         required: [true, "L'email è obbligatoria"],
@@ -24,15 +24,15 @@ const UserSchema = new mongoose.Schema({
         required: [true, 'La password è obbligatoria'],
         minlength: [6, 'La password deve avere almeno 6 caratteri'],
     },
-    // Campo amministrativo > ADMIN = 1 SOLO PER caricare/gestire prodotti
+    // Campo amministrativo > ADMIN = 1 splo per caricare/gestire prodotti
     isAdmin: {
         type: Boolean,
         default: false,
     },
-    //tracciare se l'utente ha effettuato almeno un acquisto = può fare post/recensioni
+//se un acquisto = recensione
     hasPurchased: {
         type: Boolean,
-        default: false, // Inizialmente l'utente non ha effettuato acquisti
+        default: false,
     },
 }, { 
     timestamps: true 

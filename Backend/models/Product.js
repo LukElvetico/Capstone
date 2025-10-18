@@ -1,38 +1,36 @@
 import mongoose from 'mongoose';
 
-// SUB-SCHEMA 1: Definizione della singola scelta con il suo costo > GESTIONE COSTO DA IMPLEMENTARE/FINIRE
 const ChoiceSchema = new mongoose.Schema({
-    value: { // Es: "S", "L", "8GB", "Rosso"
+    value: { 
         type: String,
         required: true,
     },
-    priceAdjustment: { // Differenza di prezzo rispetto al basePrice (es: 100 per l'upgrade a L)
+    priceAdjustment: {
         type: Number,
         default: 0,
     },
-    // Campo usato per la logica di interconnessione forse non necessario in Mongoose, ma utile per il Frontend/Backend
-    relatedOptionId: {
-        type: String, // ID o nome dell'opzione che questo elemento sblocca/blocca
+    // Nome dell'opzione che questo elemento sblocca/blocca rispetto alle regole di compatibilità. S non può avere XXX di Ram e archivazione e L ha minimo XXX di Ram ma può scegliere archivazione
+    relatedOptionId: { 
+        type: String, 
     }
-}, { _id: false });
+}, { _id: false }); // 
 
-// SUB-SCHEMA 2: Definizione di un Gruppo di Opzioni (es. "RAM", "Colore") ---
 const OptionGroupSchema = new mongoose.Schema({
-    name: { // Es: "Modello", "RAM", "Archiviazione", "Colore"
+    name: { //che sono "Modello", "RAM", "Archiviazione", "Colore"
         type: String,
         required: true,
     },
-    isDependent: { // Indica se questo gruppo dipende dalla selezione di un altro (es. RAM dipende da Modello)
+
+    isDependent: { 
         type: Boolean,
         default: false,
     },
+
     choices: [ChoiceSchema],
 }, { _id: false });
 
-
-// SCHEMA PRINCIPALE: ProductSchema 
 const ProductSchema = new mongoose.Schema({
-    name: { // Es: "Cellphone", "Hyperwatch", "Doc"
+    name: { // nome del prodotto ovvero telefono model S o telefono model L
         type: String,
         required: [true, 'Il nome del prodotto è obbligatorio'],
         trim: true,
@@ -49,23 +47,29 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    // Array di tutti i gruppi di opzioni configurabili
+
+    imageUrl: {
+        type: String,
+        required: [true, 'L\'immagine del prodotto è obbligatoria'],
+    },
+    
     optionGroups: [OptionGroupSchema], 
     
-    // Logica di Interconnessione
-    // Definizione le regole di esclusione/inclusione a livello di prodotto.
-    // Es: "Se model:S, = ram:16GB è escluso"
     compatibilityRules: {
-        type: [String], // Array di stringhe che codificano le regole
+        type: [String], 
         default: [],
     },
 
-    // Campi per Recensioni
+
     averageRating: {
         type: Number,
         default: 0,
         min: 0,
         max: 5,
+    },
+    numReviews: {
+        type: Number,
+        default: 0,
     },
 }, { 
     timestamps: true 

@@ -1,36 +1,35 @@
 import mongoose from 'mongoose';
 
 const CommentSchema = new mongoose.Schema({
-    // Campo che determina a quale modello si riferisce il commento (Product o Post)
+    parent: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: [true, 'Il commento deve essere associato a un Post o un Prodotto.'],
+        refPath: 'onModel',
+    },
+
     onModel: {
         type: String,
         required: true,
-        enum: ['Product', 'Post'] // Limita i valori ammessi
+        enum: {
+            values: ['Post', 'Product'],
+            message: 'Il riferimento del commento non è valido (deve essere Post o Product).'
+        }
     },
-    // Riferimento al documento (Product o Post) che viene recensito/commentato
-    parent: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        // Usa refPath per rendere dinamico il riferimento a seconda del valore di 'onModel'
-        refPath: 'onModel', 
-    },
-    // Riferimento all'utente che ha lasciato la recensione/commento
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
     },
-    // Il rating ha senso solo per i prodotti, potresti renderlo opzionale:
-    rating: {
-        type: Number,
-        // rimosso `required: [true, 'Il rating è obbligatorio']`
-        min: 1,
-        max: 5,
-    },
     text: {
         type: String,
-        required: [true, 'Il testo è obbligatorio'],
+        required: [true, 'Il ommento non può essere vuoto.'],
+        trim: true,
     },
+    rating: {
+        type: Number,
+        min: 1,
+        max: 5,
+    }
 }, { 
     timestamps: true 
 });

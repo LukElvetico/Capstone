@@ -1,4 +1,4 @@
-/* src/index.css */
+/* completa e personalizza LAST-issimo*/
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -7,9 +7,7 @@
   padding: 0;
   margin: 0;
   max-width: 100vw;
-  
-  /* Rimosso 'width: 100%' da :root, è gestito da #root e body */
-  /* width: 100%; */ 
+
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -21,7 +19,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* 💡 CORREZIONE: Aggiunto #root per garantire la larghezza completa al contenitore di React */
 #root {
   width: 100%; 
 }
@@ -37,14 +34,11 @@ a:hover {
 
 body {
   margin: 0;
-  width: 100%; /* Giusto, garantisce che il body copra la larghezza del viewport */
+  width: 100%;
   display: flex;
-  flex-direction: column; /* Giusto, allinea il contenuto dall'alto verso il basso */
-  /* Le righe place-items/align-items sono state commentate correttamente */
-  /* align-items: stretch; */
-  /* place-items: center; */
+  flex-direction: column; 
   min-width: 320px;
-  min-height: 100vh; /* Giusto, garantisce che il contenuto parta dall'alto */
+  min-height: 100vh; 
 }
 
 h1 {

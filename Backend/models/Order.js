@@ -5,7 +5,22 @@ const AddressSchema = new mongoose.Schema({
     city: { type: String, required: true },
     zip: { type: String, required: true },
     country: { type: String, required: true, default: 'Italia' },
-});
+}, { _id: false }); 
+
+
+const OrderItemSchema = new mongoose.Schema({
+    productId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+        required: true,
+    },
+    quantity: { type: Number, default: 1 },
+    configuration: [
+        { name: String, value: String, priceAdjustment: Number } 
+    ],
+    itemPrice: { type: Number, required: true },
+}, { _id: false });
+
 
 const OrderSchema = new mongoose.Schema({
     user: {
@@ -13,32 +28,23 @@ const OrderSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
-    // Copia degli articoli al momento dell'acquisto (simile a CartItemSchema)
-    orderItems: [{
-        productId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Product',
-            required: true,
-        },
-        quantity: Number,
-        configuration: [
-            { name: String, value: String, priceAdjustment: Number }
-        ],
-        itemPrice: Number,
-    }],
+    orderItems: [OrderItemSchema],
     shippingAddress: AddressSchema,
     totalAmount: {
         type: Number,
         required: true,
     },
     paymentMethod: {
-        type: String, // es. "CreditCard", "PayPal"
+        type: String, 
         required: true,
     },
-    paymentStatus: {
+    paymentStatus: { 
         type: String,
         enum: ['Pending', 'Paid', 'Failed'],
         default: 'Pending',
+    },
+    paidAt: { 
+        type: Date,
     },
     isDelivered: {
         type: Boolean,
