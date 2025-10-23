@@ -1,10 +1,5 @@
 import Post from '../models/Post.js';
-import User from '../models/User.js'; // serve? > verifica
-/**
- * @desc Crea un nuovo post
- * @route POST /api/posts
- * @access Privata (Richiede: protect, checkPurchase)
- */
+import User from '../models/User.js'; 
 export const createPost = async (req, res) => {
     
     const { title, content } = req.body;
@@ -32,11 +27,6 @@ export const createPost = async (req, res) => {
 };
 
 
-/**
- * @desc Ottiene tutti i post della community (pubblico)
- * @route GET /api/posts
- * @access Pubblica
- */
 export const getPosts = async (req, res) => {
     try {
         const posts = await Post.find({})
@@ -51,11 +41,6 @@ export const getPosts = async (req, res) => {
 };
 
 
-/**
- * @desc Ottiene un singolo post per ID (pubblico)
- * @route GET /api/posts/:id
- * @access Pubblica
- */
 export const getPostById = async (req, res) => {
     try {
         const post = await Post.findById(req.params.id)

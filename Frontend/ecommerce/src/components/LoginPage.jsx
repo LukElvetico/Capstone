@@ -1,69 +1,43 @@
 import React, { useState } from 'react';
-import { useAuth } from '../AuthContext.jsx'; 
+import { useAuth } from '../AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
+// 🚨 Importiamo i componenti di React-Bootstrap
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
-const RegisterPage = () => {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
+const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [submitError, setSubmitError] = useState(null);
     
-    const { register, loading } = useAuth();
+    const { login, loading } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmitError(null);
         
-        const result = await register(firstName, lastName, email, password);
+        const result = await login(email, password);
 
         if (result.success) {
             navigate('/account'); 
         } else {
-            setSubmitError(result.error || 'Registrazione non riuscita. Riprova.');
+            setSubmitError(result.error || 'Login non riuscito. Riprova.');
         }
     };
-{submitError && (
-    <Alert variant="danger" className="mt-3">
-        {submitError}
-    </Alert>
-)}
+
     return (
+        // 🚨 Utilizziamo Container e classi di spaziatura Bootstrap (my-5)
         <Container className="my-5 d-flex justify-content-center">
             <Card style={{ maxWidth: '450px', width: '100%' }} className="shadow-lg">
                 <Card.Body className="p-4 p-md-5">
-                    <h1 className="text-center mb-3 fw-bold">Registrati</h1>
-                    <p className="text-muted text-center mb-4">Crea il tuo account per accedere a tutte le funzionalità.</p>
+                    <h1 className="text-center mb-3 fw-bold">Accedi</h1>
+                    <p className="text-muted text-center mb-4">Inserisci le tue credenziali per continuare.</p>
 
                     <Form onSubmit={handleSubmit}>
-                        
-                        <Form.Group className="mb-3" controlId="firstName">
-                            <Form.Label>Nome</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={firstName}
-                                onChange={(e) => setFirstName(e.target.value)}
-                                required
-                                disabled={loading}
-                            />
-                        </Form.Group>
-                        
-                        <Form.Group className="mb-3" controlId="lastName">
-                            <Form.Label>Cognome</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={lastName}
-                                onChange={(e) => setLastName(e.target.value)}
-                                required
-                                disabled={loading}
-                            />
-                        </Form.Group>
                         
                         <Form.Group className="mb-3" controlId="email">
                             <Form.Label>Email</Form.Label>
@@ -87,6 +61,7 @@ const RegisterPage = () => {
                             />
                         </Form.Group>
 
+                        {/* Alert Bootstrap per gli errori */}
                         {submitError && (
                             <Alert variant="danger" className="mt-3">
                                 {submitError}
@@ -95,11 +70,11 @@ const RegisterPage = () => {
 
                         <Button
                             type="submit"
-                            variant="primary"
+                            variant="primary" // Bottone primario di Bootstrap
                             className="w-100 mt-3"
                             disabled={loading}
                         >
-                            {loading ? 'Registrazione in corso...' : 'Registrati'}
+                            {loading ? 'Accesso in corso...' : 'Accedi'}
                         </Button>
                         
                     </Form>
@@ -109,4 +84,4 @@ const RegisterPage = () => {
     );
 };
 
-export default RegisterPage;
+export default LoginPage;

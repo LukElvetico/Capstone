@@ -1,36 +1,29 @@
 import mongoose from 'mongoose';
 
-const ChoiceSchema = new mongoose.Schema({
-    value: { 
-        type: String,
-        required: true,
-    },
-    priceAdjustment: {
-        type: Number,
-        default: 0,
-    },
-    // Nome dell'opzione che questo elemento sblocca/blocca rispetto alle regole di compatibilità. S non può avere XXX di Ram e archivazione e L ha minimo XXX di Ram ma può scegliere archivazione
-    relatedOptionId: { 
-        type: String, 
-    }
-}, { _id: false }); // 
+const OptionSchema = new mongoose.Schema({
+    optionName: { type: String, required: true }, 
+    optionId: { type: String, required: true, unique: true }, 
+    priceAdjustment: { type: Number, default: 0 },
+    description: { type: String },
+});
 
 const OptionGroupSchema = new mongoose.Schema({
-    name: { //che sono "Modello", "RAM", "Archiviazione", "Colore"
-        type: String,
-        required: true,
-    },
+    groupName: { type: String, required: true }, 
+    options: [OptionSchema],
+    minSelection: { type: Number, default: 1 },
+    maxSelection: { type: Number, default: 1 },
+});
 
-    isDependent: { 
-        type: Boolean,
-        default: false,
-    },
+const CompatibilityRuleSchema = new mongoose.Schema({
+    ruleName: { type: String, required: true },
+    sourceOptionId: { type: String, required: true },
+    excludedOptionId: { type: String, required: true }, 
+    message: { type: String },
+});
 
-    choices: [ChoiceSchema],
-}, { _id: false });
 
 const ProductSchema = new mongoose.Schema({
-    name: { // nome del prodotto ovvero telefono model S o telefono model L
+    name: {
         type: String,
         required: [true, 'Il nome del prodotto è obbligatorio'],
         trim: true,
@@ -39,40 +32,25 @@ const ProductSchema = new mongoose.Schema({
     basePrice: {
         type: Number,
         required: [true, 'Il prezzo base è obbligatorio'],
+        min: 0,
     },
     description: {
         type: String,
+        required: [true, 'La descrizione è obbligatoria'],
     },
     category: {
         type: String,
         required: true,
     },
-
     imageUrl: {
         type: String,
-        required: [true, 'L\'immagine del prodotto è obbligatoria'],
+        default: 'https://via.placeholder.com/300x200?text=Prodotto',
     },
-    
-    optionGroups: [OptionGroupSchema], 
-    
-    compatibilityRules: {
-        type: [String], 
-        default: [],
-    },
+    optionGroups: [OptionGroupSchema],
+    compatibilityRules: [CompatibilityRuleSchema],
 
-
-    averageRating: {
-        type: Number,
-        default: 0,
-        min: 0,
-        max: 5,
-    },
-    numReviews: {
-        type: Number,
-        default: 0,
-    },
-}, { 
-    timestamps: true 
+}, {
+    timestamps: true
 });
 
 export default mongoose.model('Product', ProductSchema);

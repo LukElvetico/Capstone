@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const UserSchema = new mongoose.Schema({
-
     email: {
         type: String,
         required: [true, "L'email è obbligatoria"],
@@ -24,12 +24,10 @@ const UserSchema = new mongoose.Schema({
         required: [true, 'La password è obbligatoria'],
         minlength: [6, 'La password deve avere almeno 6 caratteri'],
     },
-    // Campo amministrativo > ADMIN = 1 splo per caricare/gestire prodotti
     isAdmin: {
         type: Boolean,
         default: false,
     },
-//se un acquisto = recensione
     hasPurchased: {
         type: Boolean,
         default: false,
@@ -38,5 +36,11 @@ const UserSchema = new mongoose.Schema({
     timestamps: true 
 });
 
+UserSchema.methods.matchPassword = async function (enteredPassword) {
+    return await bcrypt.compare(enteredPassword, this.password);
+};
+UserSchema.pre('save', async function (next) {
+    next();
+});
 
 export default mongoose.model('User', UserSchema);

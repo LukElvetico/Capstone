@@ -1,54 +1,43 @@
 import User from '../models/User.js';
+import asyncHandler from 'express-async-handler'; 
 
-/**
- * @desc Ottiene i dettagli del profilo dell'utente loggato
- * @route GET /api/users/me
- * @access Privata (richiede 'protect')
- */
-export const getMyProfile = async (req, res) => {
-    const user = req.user; 
+export const getMyProfile = asyncHandler(async (req, res) => {
+    const profile = await User.findById(req.user._id).select('-password');
     
-    try {
-        const profile = await User.findById(user._id).select('-password');
-        
-        if (!profile) {
-            return res.status(404).json({ message: 'Profilo utente non trovato.' });
-        }
-
-        res.status(200).json(profile);
-
-    } catch (error) {
-        res.status(500).json({ message: 'Errore nel recupero del profilo.', error: error.message });
+    if (profile) {
+        res.json(profile);
+    } else {
+        res.status(404);
+        throw new Error('Profilo utente non trovato.');
     }
-};
+});
 
-/**
- * @desc Aggiorna i dettagli del profilo dell'utente loggato (nome, email, password)
- * @route PUT /api/users/me
- * @access Privata (richiede 'protect')
- */
-export const updateMyProfile = async (req, res) => {
-    const user = req.user; 
+export const updateMyProfile = asyncHandler(async (req, res) => {
     
-    try {
-        const profile = await User.findById(user._id);
+    const profile = await User.findById(req.user._id);
 
-        if (!profile) {
-            return res.status(404).json({ message: 'Profilo utente non trovato.' });
+    if (profile) {
+        
+        if (req.body.email && req.body.email !== profile.email) {
+             const userExists = await User.findOne({ email: req.body.email });
+             
+             if (userExists) {
+                res.status(400); 
+                throw new Error('Un altro utente con questa email è già registrato.');
+             }
+             profile.email = req.body.email;
         }
-
+        
         profile.firstName = req.body.firstName || profile.firstName;
         profile.lastName = req.body.lastName || profile.lastName;
-        profile.email = req.body.email || profile.email;
 
         if (req.body.password) {
-            const salt = await bcrypt.genSalt(10); 
-            profile.password = await bcrypt.hash(req.body.password, salt);
+            profile.password = req.body.password;
         }
 
         const updatedProfile = await profile.save();
-
-        res.status(200).json({
+        
+        res.json({
             _id: updatedProfile._id,
             firstName: updatedProfile.firstName,
             lastName: updatedProfile.lastName,
@@ -57,7 +46,8 @@ export const updateMyProfile = async (req, res) => {
             hasPurchased: updatedProfile.hasPurchased,
         });
 
-    } catch (error) {
-        res.status(400).json({ message: 'Errore nell\'aggiornamento del profilo.', error: error.message });
+    } else {
+        res.status(404);
+        throw new Error('Profilo utente non trovato.');
     }
-};
+});

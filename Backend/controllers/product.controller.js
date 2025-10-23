@@ -1,173 +1,139 @@
 import Product from '../models/Product.js';
+import asyncHandler from 'express-async-handler';
+import mongoose from 'mongoose'; 
 
-/**
- * @desc Crea un nuovo prodotto (Admin)
- * @route POST /api/products
- * @access Privata/Admin (richiede protect, admin)
- */
-export const createProduct = async (req, res) => {
-    // req.body.imageUrl fornito dal middleware 'uploadToCloudinary' > verifica/sistemare 
+const normalizeForId = (str) => {
+    return (str || '').toString().replace(/\s/g, '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+};
+
+const processOptionGroups = (optionGroups) => {
+    return optionGroups.map(group => {
+        const normalizedGroupName = normalizeForId(group.groupName || group.name);
+        
+        const processedOptions = group.options.map(option => {
+            const normalizedOptionName = normalizeForId(option.name);
+            const generatedOptionId = `${normalizedGroupName}:${normalizedOptionName}`;
+
+            return {
+                ...option,
+                optionName: option.name, 
+                optionId: generatedOptionId, 
+            };
+        });
+
+        return {
+            ...group,
+            options: processedOptions,
+            groupName: group.groupName || group.name, 
+        };
+    });
+};
+
+
+export const createProduct = asyncHandler(async (req, res) => {
     const { name, basePrice, description, category, imageUrl, optionGroups, compatibilityRules } = req.body;
 
+    const processedOptionGroups = processOptionGroups(optionGroups);
+
     try {
-        const product = await Product.create({
+        const product = new Product({
             name,
             basePrice,
             description,
             category,
-            imageUrl, // url cloudinary
-            optionGroups,
+            imageUrl: req.body.imageUrl || imageUrl, 
+            optionGroups: processedOptionGroups,
             compatibilityRules,
+
         });
 
-        res.status(201).json({ 
-            message: 'Prodotto creato con successo', 
-            product 
-        });
+        const createdProduct = await product.save();
+        res.status(201).json(createdProduct);
+
     } catch (error) {
-        res.status(400).json({ 
-            message: 'Errore nella creazione del prodotto.', 
-            error: error.message 
-        });
+        if (error.code === 11000) {
+            const field = Object.keys(error.keyValue)[0];
+            res.status(400); 
+            throw new Error(`Valore duplicato per il campo: '${field}'. Assicurati che il nome del prodotto e gli ID delle opzioni siano univoci.`);
+        } 
+        
+        if (error instanceof mongoose.Error.ValidationError) {
+            const messages = Object.values(error.errors).map(val => val.message);
+            res.status(400);
+            throw new Error(`Errore di validazione: ${messages.join(', ')}`);
+        } 
+        res.status(500);
+        throw new Error(`Errore generico durante il salvataggio del prodotto: ${error.message}`);
     }
-};
+});
 
-/**
- * @desc Aggiorna un prodotto esistente (Admin)
- * @route PUT /api/products/:id
- * @access Privata/Admin
- */
-export const updateProduct = async (req, res) => {
-    const { name, basePrice, description, category, imageUrl, optionGroups, compatibilityRules } = req.body;
+export const getProducts = asyncHandler(async (req, res) => {
+    const products = await Product.find({});
+    res.json(products);
+});
 
-    try {
-        const product = await Product.findById(req.params.id);
+export const getProductById = asyncHandler(async (req, res) => {
+    const product = await Product.findById(req.params.id);
 
-        if (!product) {
-            return res.status(404).json({ message: 'Prodotto non trovato.' });
+    if (product) {
+        res.json(product);
+    } else {
+        res.status(404);
+        throw new Error('Prodotto non trovato');
+    }
+});
+
+export const updateProduct = asyncHandler(async (req, res) => {
+    const { 
+        name, 
+        basePrice, 
+        description, 
+        category, 
+        imageUrl, 
+        optionGroups, 
+        compatibilityRules 
+    } = req.body;
+
+    const product = await Product.findById(req.params.id);
+
+    if (product) {
+        let processedOptionGroups = optionGroups;
+        
+        if (optionGroups) {
+            processedOptionGroups = processOptionGroups(optionGroups);
         }
 
         product.name = name || product.name;
-        product.basePrice = basePrice || product.basePrice;
+        product.basePrice = basePrice !== undefined ? basePrice : product.basePrice;
         product.description = description || product.description;
         product.category = category || product.category;
-        product.imageUrl = imageUrl || product.imageUrl;
-        product.optionGroups = optionGroups || product.optionGroups;
+        
+        if (req.body.imageUrl) {
+             product.imageUrl = req.body.imageUrl; 
+        } else if (imageUrl !== undefined) {
+             product.imageUrl = imageUrl;
+        }
+
+        product.optionGroups = processedOptionGroups || product.optionGroups;
         product.compatibilityRules = compatibilityRules || product.compatibilityRules;
 
         const updatedProduct = await product.save();
-        res.status(200).json({ 
-            message: 'Prodotto aggiornato con successo', 
-            product: updatedProduct 
-        });
-        
-    } catch (error) {
-        res.status(400).json({ 
-            message: 'Errore nell\'aggiornamento del prodotto.', 
-            error: error.message 
-        });
+        res.json(updatedProduct);
+
+    } else {
+        res.status(404);
+        throw new Error('Prodotto non trovato.');
     }
-};
+});
 
-/**
- * @desc Elimina un prodotto (Admin)
- * @route DELETE /api/products/:id
- * @access Privata/Admin
- */
-export const deleteProduct = async (req, res) => {
-    try {
-        const result = await Product.findByIdAndDelete(req.params.id);
+export const deleteProduct = asyncHandler(async (req, res) => {
+    const product = await Product.findById(req.params.id);
 
-        if (!result) {
-            return res.status(404).json({ message: 'Prodotto non trovato.' });
-        }
-        
-        res.status(200).json({ message: 'Prodotto eliminato con successo.' });
-    } catch (error) {
-        res.status(500).json({ message: 'Errore nell\'eliminazione del prodotto.', error: error.message });
+    if (product) {
+        await Product.deleteOne({ _id: product._id }); 
+        res.json({ message: 'Prodotto rimosso con successo.' });
+    } else {
+        res.status(404);
+        throw new Error('Prodotto non trovato.');
     }
-};
-
-/**
- * @desc Ottiene tutti i prodotti
- * @route GET /api/products
- * @access Pubblica
- */
-export const listAllProducts = async (req, res) => {
-    try {
-        // filtri e paginazione? Da inserire qui in caso
-        const products = await Product.find({});
-        res.status(200).json(products);
-    } catch (error) {
-        res.status(500).json({ message: 'Errore nel recupero dei prodotti.', error: error.message });
-    }
-};
-
-/**
- * @desc Ottiene i dettagli di un singolo prodotto
- * @route GET /api/products/:id
- * @access Pubblica
- */
-export const getProductDetails = async (req, res) => {
-    try {
-        const product = await Product.findById(req.params.id);
-
-        if (!product) {
-            return res.status(404).json({ message: 'Prodotto non trovato.' });
-        }
-        res.status(200).json(product);
-    } catch (error) {
-        res.status(404).json({ message: 'Prodotto non trovato o ID non valido.' });
-    }
-};
-
-/**
- * @desc Esegue la configurazione di un prodotto e calcola il prezzo finale.
- * @route POST /api/configurator
- * @access Pubblica
- */
-export const configureProduct = async (req, res) => {
-    const { productId, selectedOptions } = req.body; 
-
-    if (!productId || !selectedOptions) {
-        return res.status(400).json({ message: 'Prodotto e opzioni di configurazione sono obbligatorie.' });
-    }
-
-    try {
-        const product = await Product.findById(productId);
-
-        if (!product) {
-            return res.status(404).json({ message: 'Prodotto base non trovato.' });
-        }
-
-        let finalPrice = product.basePrice;
-        let selectedConfiguration = [];
-
-        
-        selectedOptions.forEach(selection => {
-            const group = product.optionGroups.find(g => g.name === selection.name);
-            if (group) {
-                const choice = group.choices.find(c => c.value === selection.value);
-                if (choice) {
-                    finalPrice += choice.priceAdjustment;
-                    selectedConfiguration.push({
-                        name: selection.name,
-                        value: selection.value,
-                        priceAdjustment: choice.priceAdjustment,
-                    });
-                }
-            }
-        });
-        
-        res.status(200).json({
-            message: 'Configurazione completata.',
-            productId: product._id,
-            productName: product.name,
-            finalPrice: parseFloat(finalPrice.toFixed(2)),
-            configuration: selectedConfiguration,
-        });
-
-    } catch (error) {
-        res.status(500).json({ message: 'Errore nella configurazione del prodotto.', error: error.message });
-    }
-};
+});

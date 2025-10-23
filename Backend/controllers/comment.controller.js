@@ -1,12 +1,7 @@
 import Comment from '../models/Comment.js';
-import Post from '../models/Post.js';      // verifica
-import Product from '../models/Product.js'; // verifica
+import Post from '../models/Post.js';      
+import Product from '../models/Product.js'; 
 
-/**
- * @desc Nuova recensione su  risorsa (Post che è prodotto)
- * @route POST /api/posts/:postId/comments oppure produt al posto di post, da capire come gestire
- * @access Privata = protect, checkPurchase
- */
 export const createComment = async (req, res) => {
     let parentId;
     let onModel;
@@ -48,7 +43,6 @@ export const createComment = async (req, res) => {
         const newComment = await Comment.create({
             user,
             text,
-           // rating: onModel === 'Product' ? rating : undefined, 
             parent: parentId,
             onModel,
         });
@@ -67,11 +61,6 @@ export const createComment = async (req, res) => {
     }
 };
 
-/**
- * @desc Ottiene le recensioni/post
- * @route GET /api/posts/:postId/comments o product > capire
- * @access Pubblica
- */
 export const getCommentsByParent = async (req, res) => {
     let parentId;
     let onModel;

@@ -1,11 +1,18 @@
 import mongoose from 'mongoose';
 
 const CartItemSchema = new mongoose.Schema({
-    // Prodotto base: versione S o versione L
     productId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product',
         required: true,
+    },
+    name: {
+        type: String,
+        required: true,
+    },
+    imageUrl: { 
+        type: String,
+        required: false,
     },
     quantity: {
         type: Number,
@@ -14,12 +21,12 @@ const CartItemSchema = new mongoose.Schema({
         default: 1,
     },
     configuration: [{
-        name: String, // es "RAM"
-        value: String, // es "16GB"
+        name: String, 
+        value: String, 
         priceAdjustment: Number, 
     }],
 
-    itemPrice: {
+    itemPrice: { 
         type: Number,
         required: true,
     },
@@ -27,14 +34,14 @@ const CartItemSchema = new mongoose.Schema({
 
 
 const CartSchema = new mongoose.Schema({
-    //un utente, un carrello
+
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
-        unique: true, // Ogni utente può avere un solo carrello attivo
+        unique: true, 
     },
-    items: [CartItemSchema], // Array degli articoli nel carrello
+    items: [CartItemSchema], 
     totalPrice: {
         type: Number,
         default: 0,

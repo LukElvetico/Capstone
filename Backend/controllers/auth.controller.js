@@ -1,114 +1,85 @@
 import User from '../models/User.js';
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-
-const JWT_SECRET = process.env.JWT_SECRET; 
-
+import asyncHandler from 'express-async-handler';
+import bcrypt from 'bcryptjs'; 
+import { sendWelcomeEmail } from '../helpers/mailer.js';
 const generateToken = (userId, isAdmin) => {
     return jwt.sign(
-        { 
-            userId: userId,
-            isAdmin: isAdmin 
-        }, 
-        JWT_SECRET, 
-        { expiresIn: '1d' } 
+        { userId, isAdmin }, 
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' }
     );
 };
- 
+export const registerUser = asyncHandler(async (req, res) => {
+    const { firstName, lastName, email, password } = req.body; 
 
-/**
- * @desc Registra un nuovo utente nel sistema
- * @route POST /api/auth/register
- * @access Pubblica
- */
-export const registerUser = async (req, res) => { 
-    const { email, firstName, lastName, password } = req.body; 
+    if (!firstName || !lastName || !email || !password) {
+        res.status(400); 
+        throw new Error('Assicurati di compilare tutti i campi (Nome, Cognome, Email, Password).');
+    }
+    
+    const userExists = await User.findOne({ email });
 
-    if (!email || !firstName || !lastName || !password) {
-        return res.status(400).json({ message: 'Per favore, inserisci tutti i campi richiesti.' });
+    if (userExists) {
+        res.status(400);
+        throw new Error('Utente già registrato con questa email.');
     }
 
     try {
-        const userExists = await User.findOne({ email });
-        if (userExists) {
-            return res.status(400).json({ message: 'Utente già registrato.' });
-        }
-
-        const salt = await bcrypt.genSalt(10); 
-        const hashedPassword = await bcrypt.hash(password, salt);
-        
-        const newUser = await User.create({
-            email, 
+        const user = await User.create({
             firstName, 
             lastName, 
-            password: hashedPassword, 
-        });
-        
-        const token = generateToken(newUser._id, newUser.isAdmin);
-
-        res.status(201).json({
-            _id: newUser._id,
-            email: newUser.email,
-            firstName: newUser.firstName,
-            lastName: newUser.lastName,
-            isAdmin: newUser.isAdmin,
-            hasPurchased: newUser.hasPurchased, 
-            token: token, 
+            email,
+            password,
         });
 
+        if (user) {
+            
+            sendWelcomeEmail(user.email, user.firstName)
+                .catch(err => console.error("Email di benvenuto non inviata:", err));
+            res.status(201).json({
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                isAdmin: user.isAdmin,
+                hasPurchased: user.hasPurchased,
+                token: generateToken(user._id, user.isAdmin),
+            });
+        } else {
+            res.status(400);
+            throw new Error('Dati utente non validi.');
+        }
     } catch (error) {
-        res.status(500).json({ message: 'Errore durante la registrazione.', error: error.message });
+        if (error.name === 'ValidationError') {
+            const message = Object.values(error.errors).map(val => val.message).join(', ');
+            res.status(400);
+            throw new Error(`Errore di validazione: ${message}`);
+        } 
+        
+        console.error("ERRORE DURANTE IL SALVATAGGIO UTENTE:", error);
+        res.status(500);
+        throw new Error('Errore interno del server durante la creazione utente. Verifica la connessione DB.');
     }
-}; 
+});
 
-/**
-  @desc Autentica l'utente e restituisce il token
-  @route POST /api/auth/login
-  @access Pubblica
- **/
-export const loginUser = async (req, res) => {
+export const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
-    if (!email || !password) {
-        return res.status(400).json({ message: 'Inserisci email e password.' });
-    }
+    const user = await User.findOne({ email });
 
-    try {
-        const user = await User.findOne({ email }).select('+password');
-
-        if (!user) {
-            return res.status(401).json({ message: 'Credenziali non valide.' });
-        }
-
-        const isMatch = await bcrypt.compare(password, user.password);
-
-        if (!isMatch) {
-            return res.status(401).json({ message: 'Credenziali non valide.' });
-        }
-
-        const token = generateToken(user._id, user.isAdmin);
-
-        res.status(200).json({
+    if (user && (await user.matchPassword(password))) {
+        res.json({
             _id: user._id,
-            email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
+            email: user.email,
             isAdmin: user.isAdmin,
             hasPurchased: user.hasPurchased,
-            token: token,
+            token: generateToken(user._id, user.isAdmin),
         });
-
-    } catch (error) {
-        res.status(500).json({ message: 'Errore durante l\'accesso.', error: error.message });
+    } else {
+        res.status(401); 
+        throw new Error('Email o password non validi.');
     }
-};
- 
-
-/**
- * @desc Logout (Lato server)
- * @route POST /api/auth/logout
- * @access Privata
- */
-export const logoutUser = (req, res) => { 
-    res.status(200).json({ message: 'Logout effettuato con successo (token distrutto lato client).' });
-};
+});

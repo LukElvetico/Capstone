@@ -1,103 +1,69 @@
 import React from 'react';
-import { LinkContainer } from 'react-router-bootstrap';
-import { Navbar, Container, Nav, NavDropdown, Form, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
- 
+import { Navbar, Nav, Container, NavDropdown, Badge } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext.jsx';
+import { useCart } from '../CartContext.jsx'; 
+
 const Header = () => {
-    const isLoggedIn = false; 
-    const isAdmin = false; 
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
+    const { cartCount } = useCart(); 
+
     const handleLogout = () => {
-        console.log('Eseguendo Logout.');
-    }
+        logout();
+        navigate('/login');
+    };
 
     return (
-        <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
-            <Container fluid>
-                
-                {/*Logo)*/}
-                <Navbar.Brand as={Link} to="/">EpiCommerce</Navbar.Brand>
+        <Navbar bg="dark" variant="dark" expand="lg" sticky="top" className="shadow-lg">
+            <Container>
+                <Navbar.Brand as={Link} to="/" className="fw-bold">
+                    Epi<span className="text-info fst-italic">Commerce</span>
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
-                    
-                    {/*Menù*/}
                     <Nav className="me-auto">
-                        
-                        {/* Link Home */}
-                        <Nav.Link as={Link} to="/">Home</Nav.Link>
-                        
-                        {/* Shop*/}
-                        <Nav.Link as={Link} to="/shop">Shop</Nav.Link>
-
-                        {/*Post*/}
-                        <Nav.Link as={Link} to="/community">Community</Nav.Link>
-                        
-                        {/*Elenco Prodotti*/}
-                        <NavDropdown title="Altro" id="basic-nav-dropdown">
-                            <NavDropdown.Item as={Link} to="/novita">Ultime Novità</NavDropdown.Item>
-                            <NavDropdown.Item as={Link} to="/revisionati">Revisionati</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item as={Link} to="/custom">Custom (Su Misura)</NavDropdown.Item>
-                        </NavDropdown>
-                        
-                        {/* ADMIN, visibile solo se: isAdmin è true) */}
-                        {isAdmin && (
-                            <Nav.Link as={Link} to="/admin/dashboard" className="text-warning">
-                                Admin
-                            </Nav.Link>
-                        )}
+                        <Nav.Link as={Link} to="/shop"><i className="bi bi-shop me-1"></i>Shop</Nav.Link>
+                        <Nav.Link as={Link} to="/community"><i className="bi bi-people me-1"></i>Community</Nav.Link>
                     </Nav>
-                    
-                    {/* Search Bar */}
-                    <Form className="d-flex me-4">
-                        <Form.Control
-                            type="search"
-                            placeholder="Cerca Prodotti..."
-                            className="me-2"
-                            aria-label="Search"
-                        />
-                        <Button variant="outline-light">Cerca</Button>
-                    </Form>
-
-                    {/* Links di Autenticazione e Carrello */}
                     <Nav>
-                        {/*Icona*/}
-                        <Nav.Link as={Link} to="/carrello">
-                               <i className="fas fa-shopping-cart"></i> Carrello
+                        {/* Link al Carrello con Badge Dinamico */}
+                        <Nav.Link as={Link} to="/carrello" className='d-flex align-items-center'>
+                            <i className="bi bi-cart-fill me-1"></i> Carrello 
+                            {cartCount > 0 && <Badge pill bg="info" className="ms-1">{cartCount}</Badge>}
                         </Nav.Link>
-                        
-                        {isLoggedIn ? (
-                            <NavDropdown title="Profilo" id="user-nav-dropdown">
-                                <NavDropdown.Item as={Link} to="/profilo">Il mio Profilo</NavDropdown.Item>
-                                <NavDropdown.Item as={Link} to="/ordini">I miei Ordini</NavDropdown.Item>
+
+                        {/* Dropdown Utente o Accesso/Registrazione */}
+                        {user ? (
+                            <NavDropdown 
+                                title={<><i className="bi bi-person-fill me-1"></i> Account</>} 
+                                id="basic-nav-dropdown"
+                                align="end"
+                            >
+                                <NavDropdown.Item as={Link} to="/account">
+                                    Ciao, {user.firstName || user.email}!
+                                </NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="/ordini">
+                                    I Miei Ordini
+                                </NavDropdown.Item>
+                                {user.isAdmin && (
+                                    <NavDropdown.Item as={Link} to="/admin/upload" className='text-success'>
+                                        {/* 🛑 CORREZIONE LINK: Puntare a /admin/upload */}
+                                        <i className="bi bi-tools me-1"></i> Dashboard Admin
+                                    </NavDropdown.Item>
+                                )}
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item onClick={handleLogout}>
-                                    Logout
+                                <NavDropdown.Item onClick={handleLogout} className="text-danger">
+                                    <i className="bi bi-box-arrow-right me-1"></i> Logout
                                 </NavDropdown.Item>
                             </NavDropdown>
                         ) : (
                             <>
-                                {/*ACCEDI*/}
-                                <Button 
-                                    as={Link} 
-                                    to="/accedi"
-                                    variant="outline-info" 
-                                    className="me-2"
-                                >
-                                    Accedi
-                                </Button>
-                                
-                                {/*REGISTRATI */}
-                                <Button 
-                                    as={Link} 
-                                    to="/registrati"
-                                    variant="info"
-                                >
-                                    Registrati
-                                </Button>
+                                <Nav.Link as={Link} to="/login">Accedi</Nav.Link>
+                                <Nav.Link as={Link} to="/register">Registrati</Nav.Link>
                             </>
                         )}
                     </Nav>
-
                 </Navbar.Collapse>
             </Container>
         </Navbar>
