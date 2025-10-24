@@ -32,7 +32,7 @@ export const sendWelcomeEmail = async (toEmail, firstName) => {
                 <p>Grazie per esserti registrato su EpiCommerce. Siamo entusiasti di averti nella nostra community.</p>
                 <p>Ora puoi esplorare il nostro catalogo, personalizzare i tuoi Phone S e Phone L, e lasciare recensioni sui tuoi acquisti.</p>
                 <p style="margin-top: 20px;">Inizia subito: 
-                    <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}" 
+                    <a href="${process.env.FRONTEND_URL || 'https://capstone-lukes-projects-5d5223d5.vercel.app/'}" 
                         style="display: inline-block; padding: 10px 20px; background-color: #ffc107; color: #333; text-decoration: none; border-radius: 5px; font-weight: bold;">
                         Vai al Sito
                     </a>
