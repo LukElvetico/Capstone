@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
-// 🚨 Importiamo i componenti di React-Bootstrap
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
@@ -30,7 +29,6 @@ const LoginPage = () => {
     };
 
     return (
-        // 🚨 Utilizziamo Container e classi di spaziatura Bootstrap (my-5)
         <Container className="my-5 d-flex justify-content-center">
             <Card style={{ maxWidth: '450px', width: '100%' }} className="shadow-lg">
                 <Card.Body className="p-4 p-md-5">
@@ -60,8 +58,6 @@ const LoginPage = () => {
                                 disabled={loading}
                             />
                         </Form.Group>
-
-                        {/* Alert Bootstrap per gli errori */}
                         {submitError && (
                             <Alert variant="danger" className="mt-3">
                                 {submitError}
@@ -70,7 +66,7 @@ const LoginPage = () => {
 
                         <Button
                             type="submit"
-                            variant="primary" // Bottone primario di Bootstrap
+                            variant="primary" 
                             className="w-100 mt-3"
                             disabled={loading}
                         >

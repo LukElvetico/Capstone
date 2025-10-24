@@ -5,11 +5,11 @@ import { it } from 'date-fns/locale';
 import { useAuth } from '../AuthContext.jsx'; 
 import axios from 'axios';
 
-const POSTS_API_URL = '/posts'; 
+const BASE_URL = import.meta.env.VITE_API_URL
+const POSTS_API_URL = `${BASE_URL}/posts`; 
 
 const StarRatingDisplay = ({ rating, size = 18 }) => {
     const stars = [];
-    // Numero intero di stelle piene
     const fullStars = Math.floor(rating);
 
     for (let i = 0; i < 5; i++) {

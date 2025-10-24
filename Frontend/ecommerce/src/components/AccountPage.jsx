@@ -156,8 +156,6 @@ const AccountPage = () => {
                                     I Miei Ordini
                                 </Nav.Link>
                             </Nav.Item>
-                           
-                            {/* Bottone Logout */}
                             <Nav.Item className="mt-3 pt-3 border-top">
                                 <Button variant="outline-danger" onClick={logout} className="w-100">
                                     <i className="bi bi-box-arrow-right me-2"></i>

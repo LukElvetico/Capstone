@@ -36,7 +36,6 @@ const ProtectedRoute = () => {
 const AdminRoute = () => {
     const { user, loading } = useAuth();
     if (loading) return <Container className="text-center my-5 p-5"><Spinner animation="border" /></Container>;
-    // Se non è loggato, va al login. Se è loggato ma non admin, va all'account.
     return user && user.isAdmin ? <Outlet /> : <Navigate to={user ? "/account" : "/login"} replace />;
 };
 
@@ -51,38 +50,22 @@ function App() {
                     <main className="flex-grow-1">
                         <Container>
                             <Routes>
-                                {/* Rotte Pubbliche */}
                                 <Route path="/" element={<HomePage />} />
                                 <Route path="/shop" element={<ShopPage />} />
                                 <Route path="/shop/:id" element={<ProductDetailPage />} />
                                 <Route path="/carrello" element={<CartPage />} />
-                                {/* Rotta CommunityPage */}
                                 <Route path="/community" element={<CommunityPage />} />
-                                
-                                {/* Rotte di Autenticazione (Non accessibili se loggati) */}
-                                {/* Un utente loggato viene reindirizzato all'account */}
                                 <Route path="/login" element={<ProtectedRedirect element={<LoginPage />} redirectTo="/account" />} />
                                 <Route path="/register" element={<ProtectedRedirect element={<RegisterPage />} redirectTo="/account" />} />
-                                
-                                {/* Rotte protette Utente (Login richiesto) */}
                                 <Route element={<ProtectedRoute />}>
-                                    {/* Il '/*' serve per le rotte annidate (es. /account/profile) */}
                                     <Route path="/account/*" element={<AccountPage />} /> 
-                                    
-                                    {/* Rotta degli Ordini, con rotta annidata per il dettaglio */}
                                     <Route path="/ordini" element={<OrdersPage />} />
                                     <Route path="/ordini/:id" element={<OrderDetailPage />} />
                                     
                                 </Route>
-
-                                {/* Rotte protette Admin (Login + isAdmin=true richiesto) */}
                                 <Route element={<AdminRoute />}>
-                                    {/* ROTTA ADMIN ORIGINALE */}
                                     <Route path="/admin/upload" element={<ProductUploadPage />} /> 
-                                    {/* Puoi aggiungere altre rotte admin qui (es. /admin/users, /admin/products) */}
                                 </Route>
-                                
-                                {/* Rotta 404/Catch-all */}
                                 <Route path="*" element={
                                     <Container className="mt-5 text-center p-5 bg-white rounded shadow-sm">
                                         <h1 className="display-1 fw-bolder text-primary">404</h1>
@@ -106,7 +89,6 @@ function App() {
 const ProtectedRedirect = ({ element, redirectTo = "/" }) => {
     const { user, loading } = useAuth();
     if (loading) return <Container className="text-center my-5 p-5"><Spinner animation="border" /></Container>;
-    // Se l'utente è loggato, lo reindirizza (ad esempio, da /login a /account)
     return user ? <Navigate to={redirectTo} replace /> : element;
 };
 

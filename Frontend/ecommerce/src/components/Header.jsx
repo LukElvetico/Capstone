@@ -27,13 +27,10 @@ const Header = () => {
                         <Nav.Link as={Link} to="/community"><i className="bi bi-people me-1"></i>Community</Nav.Link>
                     </Nav>
                     <Nav>
-                        {/* Link al Carrello con Badge Dinamico */}
                         <Nav.Link as={Link} to="/carrello" className='d-flex align-items-center'>
                             <i className="bi bi-cart-fill me-1"></i> Carrello 
                             {cartCount > 0 && <Badge pill bg="info" className="ms-1">{cartCount}</Badge>}
                         </Nav.Link>
-
-                        {/* Dropdown Utente o Accesso/Registrazione */}
                         {user ? (
                             <NavDropdown 
                                 title={<><i className="bi bi-person-fill me-1"></i> Account</>} 
@@ -48,7 +45,6 @@ const Header = () => {
                                 </NavDropdown.Item>
                                 {user.isAdmin && (
                                     <NavDropdown.Item as={Link} to="/admin/upload" className='text-success'>
-                                        {/* 🛑 CORREZIONE LINK: Puntare a /admin/upload */}
                                         <i className="bi bi-tools me-1"></i> Dashboard Admin
                                     </NavDropdown.Item>
                                 )}
