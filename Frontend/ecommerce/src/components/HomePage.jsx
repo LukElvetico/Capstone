@@ -5,9 +5,9 @@ import axios from 'axios';
 import { formatDistanceToNow, isValid } from 'date-fns'; 
 import { it } from 'date-fns/locale';
 
-const BASE_URL = import.meta.env.VITE_API_URL
-const PRODUCTS_API_URL = `${BASE_URL}/products`; 
-const POSTS_API_URL = `${BASE_URL}/posts`; 
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5173/api';
+const PRODUCTS_API_URL = `${BASE_URL}/products`;
+const POSTS_API_URL = `${BASE_URL}/posts`;
 const CarouselImage = ({ src, altText }) => (
     <div className="carousel-image-container d-flex justify-content-center align-items-center" style={{ height: '500px', overflow: 'hidden' }}>
         <img
