@@ -152,7 +152,7 @@ const CartPage = () => {
                     ))}
                 </Col>
                 
-                <Col md={4}>
+                <Col id='cartTLDR' className="mt-5" md={4}>
                     <Card className="shadow-lg sticky-top" style={{ top: '15px' }}>
                         <Card.Header className="bg-primary text-white">
                             Riepilogo Ordine
