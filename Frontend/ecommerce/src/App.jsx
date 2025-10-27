@@ -58,7 +58,7 @@ function App() {
                                 <Route path="/shop/:id" element={<ProductDetailPage />} />
                                 <Route path="/carrello" element={<CartPage />} />
                                 <Route path="/community" element={<CommunityPage />} />
-                                <Route path="/checkout" element={<SuccessPage />} />
+                                
                                 <Route path="/login" element={<ProtectedRedirect element={<LoginPage />} redirectTo="/account" />} />
                                 <Route path="/register" element={<ProtectedRedirect element={<RegisterPage />} redirectTo="/account" />} />
                                 <Route element={<ProtectedRoute />}>
