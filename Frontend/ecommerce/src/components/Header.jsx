@@ -2,7 +2,8 @@ import React from 'react';
 import { Navbar, Nav, Container, NavDropdown, Badge } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext.jsx';
-import { useCart } from '../CartContext.jsx'; 
+import { useCart } from '../CartContext.jsx';
+import '../Index.css';
 
 const Header = () => {
     const { user, logout } = useAuth();
@@ -15,7 +16,7 @@ const Header = () => {
     };
 
     return (
-        <Navbar bg="dark" variant="dark" expand="lg" sticky="top" className="shadow-lg z-5">
+        <Navbar bg="dark" variant="dark" expand="lg" sticky="top" className="shadow-lg zindex">
             <Container>
                 <Navbar.Brand as={Link} to="/" className="fw-bold">
                     Epi<span className="text-info fst-italic">Commerce</span>
