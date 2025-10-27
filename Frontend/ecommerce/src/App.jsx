@@ -23,13 +23,8 @@ import CommunityPage from './components/CommunityPage';
 import AccountPage from './components/AccountPage';
 import OrdersPage from './components/OrdersPage'; 
 import ProductUploadPage from './components/ProductUploadPage';
+import CheckoutSuccessPage from './components/SuccessPage'; // Componente di successo
 
-// Importazione dei componenti di Checkout corretti
-import CheckoutPage from './components/CheckoutPage'; // Assumendo che esista
-import CheckoutSuccessPage from './components/CheckoutSuccessPage'; // Componente di successo
-
-// PLACEHOLDER per i componenti mancanti o non ancora implementati
-const CheckoutPagePlaceholder = CheckoutPage; // Rimuovi questa riga se CheckoutPage esiste e lo importi sopra
 const OrderDetailPage = () => <Container className="my-5"><Alert variant="info">Pagina **Dettaglio Ordine** (ID: {useParams().id}) in costruzione.</Alert></Container>; 
 
 const ProtectedRoute = () => {
@@ -60,9 +55,6 @@ function App() {
                                 <Route path="/shop/:id" element={<ProductDetailPage />} />
                                 <Route path="/carrello" element={<CartPage />} />
                                 <Route path="/community" element={<CommunityPage />} />
-                                
-                                {/* Rotte Checkout: QUESTE ERANO MANCANTI NELL'ULTIMA VERSIONE */}
-                                <Route path="/checkout" element={<CheckoutPagePlaceholder />} />
                                 <Route path="/checkout/successo" element={<CheckoutSuccessPage />} />
                                 
                                 <Route path="/login" element={<ProtectedRedirect element={<LoginPage />} redirectTo="/account" />} />
