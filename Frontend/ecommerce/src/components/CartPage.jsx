@@ -1,4 +1,4 @@
-/*import React from 'react';
+import React from 'react';
 import { Container, Row, Col, Card, Button, ListGroup, Alert, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useCart } from '../CartContext';
@@ -181,8 +181,8 @@ const CartPage = () => {
     );
 };
 
-export default CartPage;*/
-
+export default CartPage;
+/*
 import React, { useState } from 'react';
 import { Container, Row, Col, Card, Button, ListGroup, Alert, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -422,4 +422,4 @@ const CartPage = () => {
     );
 };
 
-export default CartPage;
+export default CartPage;*/
