@@ -5,9 +5,11 @@ import Container from 'react-bootstrap/Container';
 import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
 import Badge from 'react-bootstrap/Badge';
+
 // contexts
 import { AuthProvider, useAuth } from './AuthContext'; 
 import { CartProvider } from './CartContext'; 
+
 // components
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -18,14 +20,17 @@ import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import CartPage from './components/CartPage';
 import CommunityPage from './components/CommunityPage';
-// protected pages
 import AccountPage from './components/AccountPage';
 import OrdersPage from './components/OrdersPage'; 
-// protected admin page
 import ProductUploadPage from './components/ProductUploadPage';
 
-// placeholder component for OrderDetailPage
-//const OrderDetailPage = () => <Container className="my-5"><Alert variant="info">Pagina **Dettaglio Ordine** (ID: {useParams().id}) in costruzione.</Alert></Container>; 
+// Importazione dei componenti di Checkout corretti
+import CheckoutPage from './components/CheckoutPage'; // Assumendo che esista
+import CheckoutSuccessPage from './components/CheckoutSuccessPage'; // Componente di successo
+
+// PLACEHOLDER per i componenti mancanti o non ancora implementati
+const CheckoutPagePlaceholder = CheckoutPage; // Rimuovi questa riga se CheckoutPage esiste e lo importi sopra
+const OrderDetailPage = () => <Container className="my-5"><Alert variant="info">Pagina **Dettaglio Ordine** (ID: {useParams().id}) in costruzione.</Alert></Container>; 
 
 const ProtectedRoute = () => {
     const { user, loading } = useAuth();
@@ -56,17 +61,23 @@ function App() {
                                 <Route path="/carrello" element={<CartPage />} />
                                 <Route path="/community" element={<CommunityPage />} />
                                 
+                                {/* Rotte Checkout: QUESTE ERANO MANCANTI NELL'ULTIMA VERSIONE */}
+                                <Route path="/checkout" element={<CheckoutPagePlaceholder />} />
+                                <Route path="/checkout/successo" element={<CheckoutSuccessPage />} />
+                                
                                 <Route path="/login" element={<ProtectedRedirect element={<LoginPage />} redirectTo="/account" />} />
                                 <Route path="/register" element={<ProtectedRedirect element={<RegisterPage />} redirectTo="/account" />} />
+                                
                                 <Route element={<ProtectedRoute />}>
                                     <Route path="/account/*" element={<AccountPage />} /> 
                                     <Route path="/ordini" element={<OrdersPage />} />
                                     <Route path="/ordini/:id" element={<OrderDetailPage />} />
-                                    
                                 </Route>
+                                
                                 <Route element={<AdminRoute />}>
                                     <Route path="/admin/upload" element={<ProductUploadPage />} /> 
                                 </Route>
+                                
                                 <Route path="*" element={
                                     <Container className="mt-5 text-center p-5 bg-white rounded shadow-sm">
                                         <h1 className="display-1 fw-bolder text-primary">404</h1>
