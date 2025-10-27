@@ -33,7 +33,7 @@ const Header = () => {
                         </Nav.Link>
                         {user ? (
                             <NavDropdown 
-                                title={<><i className="bi bi-person-fill me-1"></i> Account</>} 
+                                title={<><i className="bi bi-person-fill z-3 me-1"></i> Account</>} 
                                 id="basic-nav-dropdown"
                                 align="end"
                             >
