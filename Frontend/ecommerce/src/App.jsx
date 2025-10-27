@@ -18,14 +18,11 @@ import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import CartPage from './components/CartPage';
 import CommunityPage from './components/CommunityPage';
-//import CheckoutSuccess from './components/SuccesPage'; 
-//import CheckoutCancel from './components/CheckoutCancel';
 // protected pages
 import AccountPage from './components/AccountPage';
 import OrdersPage from './components/OrdersPage'; 
 // protected admin page
 import ProductUploadPage from './components/ProductUploadPage';
-//import SuccessPage from './components/SuccesPage';
 
 // placeholder component for OrderDetailPage
 //const OrderDetailPage = () => <Container className="my-5"><Alert variant="info">Pagina **Dettaglio Ordine** (ID: {useParams().id}) in costruzione.</Alert></Container>; 
