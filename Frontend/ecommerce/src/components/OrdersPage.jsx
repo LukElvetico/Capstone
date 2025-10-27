@@ -18,7 +18,6 @@ const getPaymentBadgeVariant = (status) => {
         default: return 'secondary';
     }
 };
-//order WIP so mock data
 const MOCK_ORDERS = [];
 
 const OrdersPage = () => {
