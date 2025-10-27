@@ -18,7 +18,7 @@ import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import CartPage from './components/CartPage';
 import CommunityPage from './components/CommunityPage';
-import CheckoutSuccess from './components/CheckoutSuccess'; 
+import CheckoutSuccess from './components/SuccesPage'; 
 import CheckoutCancel from './components/CheckoutCancel';
 // protected pages
 import AccountPage from './components/AccountPage';
