@@ -18,14 +18,14 @@ import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import CartPage from './components/CartPage';
 import CommunityPage from './components/CommunityPage';
-import CheckoutSuccess from './components/SuccesPage'; 
+//import CheckoutSuccess from './components/SuccesPage'; 
 //import CheckoutCancel from './components/CheckoutCancel';
 // protected pages
 import AccountPage from './components/AccountPage';
 import OrdersPage from './components/OrdersPage'; 
 // protected admin page
 import ProductUploadPage from './components/ProductUploadPage';
-import SuccessPage from './components/SuccesPage';
+//import SuccessPage from './components/SuccesPage';
 
 // placeholder component for OrderDetailPage
 //const OrderDetailPage = () => <Container className="my-5"><Alert variant="info">Pagina **Dettaglio Ordine** (ID: {useParams().id}) in costruzione.</Alert></Container>; 
@@ -58,7 +58,7 @@ function App() {
                                 <Route path="/shop/:id" element={<ProductDetailPage />} />
                                 <Route path="/carrello" element={<CartPage />} />
                                 <Route path="/community" element={<CommunityPage />} />
-                                <Route path="/checkout/success" element={<SuccessPage />} />
+                                <Route path="/checkout" element={<SuccessPage />} />
                                 <Route path="/login" element={<ProtectedRedirect element={<LoginPage />} redirectTo="/account" />} />
                                 <Route path="/register" element={<ProtectedRedirect element={<RegisterPage />} redirectTo="/account" />} />
                                 <Route element={<ProtectedRoute />}>
