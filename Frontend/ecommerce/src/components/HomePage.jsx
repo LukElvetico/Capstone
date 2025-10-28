@@ -346,7 +346,7 @@ const HomePage = () => {
         }, [])
     
     return (
-        <Container className="my-5 p-md-5 bg-white rounded shadow" data-aos="fade-up">
+        <Container className="my-5 p-md-5 bg-white rounded" data-aos="fade-up">
             
             <header className="text-center mb-5">
                 <h1 className="display-4 fw-bolder text-primary">Welcome in EpiCommerce</h1>
