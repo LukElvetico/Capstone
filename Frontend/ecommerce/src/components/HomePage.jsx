@@ -20,7 +20,7 @@ const SuggestedProductsSection = () => {
                 const response = await axios.get(PRODUCTS_API_URL);
                 const allProducts = response.data;
                 const filteredProducts = allProducts.filter(product =>
-                    product.categories && product.categories.some(cat => cat.suggestedItem === true)
+                    product.suggestedItem === true
                 );
 
 
@@ -58,7 +58,7 @@ const SuggestedProductsSection = () => {
             <h2 className="display-6 fw-bold text-center text-success mb-4">✨ Prodotti Consigliati per Te</h2>
             <Row className="g-4">
                 {suggestedProducts.map((product) => (
-                    <Col key={product._id} xs={12} sm={6} md={3}>
+                    <Col key={product._id} xs={12} sm={6} md={12}>
                         <Card className="h-100 shadow-sm border-success transition-shadow">
                             <Card.Img 
                                 variant="top" 
@@ -277,7 +277,6 @@ const RandomPostSection = () => {
         );
     }
     
-    // Visualizzazione del Post Casuale
     const postDate = isValid(new Date(post.createdAt)) ? 
         formatDistanceToNow(new Date(post.createdAt), { addSuffix: true, locale: it }) : 
         'Data non disponibile';

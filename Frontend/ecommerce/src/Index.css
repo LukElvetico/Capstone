@@ -95,4 +95,5 @@ svg {
 .zindex {
   z-index: 1000 !important;
   background-color: #787cc790;
+  color: black !important;
 }
