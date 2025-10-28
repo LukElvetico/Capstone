@@ -8,7 +8,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: rgba(71, 71, 72, 0.900);
+  background-color: rgba(170, 163, 167, 0.9);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -18,7 +18,7 @@
 
 #root {
   width: 100%; 
-  background-color: rgba(71, 71, 72, 0.900);
+  background-color: rgba(170, 163, 167, 0.9);
 }
 
 a {
