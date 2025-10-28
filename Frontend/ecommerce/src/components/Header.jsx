@@ -16,7 +16,7 @@ const Header = () => {
     };
 
     return (
-        <Navbar bg="blue" variant="light" expand="lg" sticky="top" className="text-black shadow-lg zindex">
+        <Navbar variant="light" expand="lg" sticky="top" className="text-dark shadow-lg zindex">
             <Container>
                 <Navbar.Brand as={Link} to="/" className="fw-bold">
                     Epi<span className="text-info fst-italic">Commerce</span>
