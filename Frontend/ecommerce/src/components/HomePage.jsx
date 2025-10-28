@@ -56,7 +56,7 @@ const SuggestedProductsSection = () => {
     }
 
     return (
-        <section className="mt-5 pt-5 border-top">
+        <section className="mt-5 pt-5 border-top" data-aos="fade-up">
             <h2 className="display-6 fw-bold text-center text-success mb-4"> Phone G One, <span> <i> semplicemente gaming</i></span></h2>
             <Row className="g-4 justify-content-center">
                 {suggestedProducts.map((product) => (
@@ -179,7 +179,7 @@ const ProductCarouselSection = () => {
         <>
             <style>{customIndicatorStyle}</style>
 
-            <Card className="mt-5 p-0 border-0 text-white shadow-lg">
+            <Card className="mt-5 p-0 border-0 text-white shadow-lg" data-aos="fade-up">
                 <Carousel 
                     controls={true}
                     indicators={true} 
@@ -284,7 +284,7 @@ const RandomPostSection = () => {
         'Data non disponibile';
 
     return (
-        <section className="mt-5 pt-5 border-top">
+        <section className="mt-5 pt-5 border-top" data-aos="fade-up">
             <h2 className="display-6 fw-bold text-center text-info mb-4">La Nostra Community Dice...</h2>
             <Card className="shadow-lg border-info mb-5">
                 <Card.Body>
@@ -342,15 +342,16 @@ const HomePage = () => {
             duration:1000,
             once:true,
         });
-        })
+        }, [])
     
     return (
-        <Container className="my-5 p-3 p-md-5 bg-white rounded shadow">
+        <Container className="my-5 p-3 p-md-5 bg-white rounded shadow" data-aos="fade-up">
             
             <header className="text-center mb-5">
                 <h1 className="display-4 fw-bolder text-primary">Welcome in EpiCommerce</h1>
                 <p className="lead mt-3 text-muted">Crea lo smartphone dei tuoi sogni e scopri cosa dicono gli altri clienti!</p>
             </header>
+            {/*<data-aos-attributi>*/}
             <SuggestedProductsSection/>
             <ProductCarouselSection />
             <RandomPostSection />
