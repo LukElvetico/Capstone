@@ -16,7 +16,7 @@ const Header = () => {
     };
 
     return (
-        <Navbar bg="dark" variant="dark" expand="lg" sticky="top" className="shadow-lg zindex">
+        <Navbar bg="blue" variant="dark" expand="lg" sticky="top" className="shadow-lg zindex">
             <Container>
                 <Navbar.Brand as={Link} to="/" className="fw-bold">
                     Epi<span className="text-info fst-italic">Commerce</span>
