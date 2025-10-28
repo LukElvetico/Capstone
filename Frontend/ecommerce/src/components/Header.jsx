@@ -19,7 +19,7 @@ const Header = () => {
         <Navbar variant="light" expand="lg" sticky="top" className="text-dark shadow-lg zindex">
             <Container>
                 <Navbar.Brand as={Link} to="/" className="fw-bold">
-                    Epi<span className="text-info fst-italic">Commerce</span>
+                    <span classnName="text-white">  Epi </span> <span/> <span className="text-info fst-italic">Commerce</span>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
