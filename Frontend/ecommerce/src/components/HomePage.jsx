@@ -8,6 +8,90 @@ import { it } from 'date-fns/locale';
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5173/api';
 const PRODUCTS_API_URL = `${BASE_URL}/products`;
 const POSTS_API_URL = `${BASE_URL}/posts`;
+
+const SuggestedProductsSection = () => {
+    const [suggestedProducts, setSuggestedProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchSuggestedProducts = async () => {
+            try {
+                const response = await axios.get(PRODUCTS_API_URL);
+                const allProducts = response.data;
+                const filteredProducts = allProducts.filter(product =>
+                    product.categories && product.categories.some(cat => cat.suggestedItem === true)
+                );
+
+
+                setSuggestedProducts(filteredProducts.slice(0, 1));
+                setLoading(false);
+            } catch (err) {
+                console.error("Errore nel recupero dei prodotti suggeriti:", err);
+                setError("Non è stato possibile caricare i prodotti suggeriti.");
+                setLoading(false);
+            }
+        };
+
+        fetchSuggestedProducts();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="text-center my-5">
+                <Spinner animation="border" variant="success" />
+                <p className="mt-2 text-success">Caricamento prodotto suggerito...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return <Alert variant="warning" className="mt-5 text-center">{error}</Alert>;
+    }
+
+    if (suggestedProducts.length === 0) {
+        return null;
+    }
+
+    return (
+        <section className="mt-5 pt-5 border-top">
+            <h2 className="display-6 fw-bold text-center text-success mb-4">✨ Prodotti Consigliati per Te</h2>
+            <Row className="g-4">
+                {suggestedProducts.map((product) => (
+                    <Col key={product._id} xs={12} sm={6} md={3}>
+                        <Card className="h-100 shadow-sm border-success transition-shadow">
+                            <Card.Img 
+                                variant="top" 
+                                src={product.imageUrl} 
+                                style={{ height: '180px', objectFit: 'cover' }} 
+                                alt={product.name}
+                            />
+                            <Card.Body className="d-flex flex-column">
+                                <Card.Title className="h6 text-success">{product.name}</Card.Title>
+                                <Card.Text className="small text-muted mb-3 flex-grow-1">
+                                    {product.description.substring(0, 50)}...
+                                </Card.Text>
+                                <div className="mt-auto">
+                                    <p className="fw-bold text-primary mb-2">€{product.basePrice.toFixed(2)}</p>
+                                    <Button 
+                                        as={Link} 
+                                        to={`/shop/${product._id}`} 
+                                        variant="outline-success" 
+                                        size="sm"
+                                        className="w-100"
+                                    >
+                                        Vedi Dettagli
+                                    </Button>
+                                </div>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                ))}
+            </Row>
+        </section>
+    );
+};
+
 const CarouselImage = ({ src, altText }) => (
     <div className="carousel-image-container d-flex justify-content-center align-items-center" style={{ height: '500px', overflow: 'hidden' }}>
         <img
@@ -260,7 +344,7 @@ const HomePage = () => {
                 <h1 className="display-4 fw-bolder text-primary">Welcome in EpiCommerce</h1>
                 <p className="lead mt-3 text-muted">Crea lo smartphone dei tuoi sogni e scopri cosa dicono gli altri clienti!</p>
             </header>
-
+            <SuggestedCarouselSelection/>
             <ProductCarouselSection />
             <RandomPostSection />
             <CallToActionSection />
