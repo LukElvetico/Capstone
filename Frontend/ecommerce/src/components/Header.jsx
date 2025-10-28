@@ -16,25 +16,26 @@ const Header = () => {
     };
 
     return (
-        <Navbar variant="light" expand="lg" sticky="top" className="text-dark shadow-lg zindex">
+        <Navbar variant="light" expand="lg" sticky="top" className="shadow-lg zindex">
             <Container>
                 <Navbar.Brand as={Link} to="/" className="fw-bold">
-                    <span classnName="text-white">  Epi </span> <span/> <span className="text-info fst-italic">Commerce</span>
+                    <span className="text-white">Epi</span>
+                    <span className="text-info fst-italic">Commerce</span>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link as={Link} to="/shop"><i className="bi bi-shop me-1"></i>Shop</Nav.Link>
-                        <Nav.Link as={Link} to="/community"><i className="bi bi-people me-1"></i>Community</Nav.Link>
+                        <Nav.Link as={Link} to="/shop" className="text-dark"><i className="bi bi-shop me-1"></i>Shop</Nav.Link>
+                        <Nav.Link as={Link} to="/community" className="text-dark"><i className="bi bi-people me-1"></i>Community</Nav.Link>
                     </Nav>
                     <Nav>
-                        <Nav.Link as={Link} to="/carrello" className='d-flex align-items-center'>
+                        <Nav.Link as={Link} to="/carrello" className='d-flex align-items-center text-dark'>
                             <i className="bi bi-cart-fill me-1"></i> Carrello 
                             {cartCount > 0 && <Badge pill bg="info" className="ms-1">{cartCount}</Badge>}
                         </Nav.Link>
                         {user ? (
                             <NavDropdown 
-                                title={<><i className="bi bi-person-fill z-3 me-1"></i> Account</>} 
+                                title={<><i className="bi bi-person-fill z-3 me-1 text-dark"></i> Account</>} 
                                 id="basic-nav-dropdown"
                                 align="end"
                             >
@@ -56,8 +57,8 @@ const Header = () => {
                             </NavDropdown>
                         ) : (
                             <>
-                                <Nav.Link as={Link} to="/login">Accedi</Nav.Link>
-                                <Nav.Link as={Link} to="/register">Registrati</Nav.Link>
+                                <Nav.Link as={Link} to="/login" className="text-dark">Accedi</Nav.Link>
+                                <Nav.Link as={Link} to="/register" className="text-dark">Registrati</Nav.Link>
                             </>
                         )}
                     </Nav>
