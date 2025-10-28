@@ -6,6 +6,7 @@ import { formatDistanceToNow, isValid } from 'date-fns';
 import { it } from 'date-fns/locale';
 import aos from 'aos';
 import 'aos/dist/aos.css';
+import '../Index.css';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const PRODUCTS_API_URL = `${BASE_URL}/products`;
