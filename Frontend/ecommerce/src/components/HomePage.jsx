@@ -5,7 +5,7 @@ import axios from 'axios';
 import { formatDistanceToNow, isValid } from 'date-fns'; 
 import { it } from 'date-fns/locale';
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5173/api';
+const BASE_URL = import.meta.env.VITE_API_URL;
 const PRODUCTS_API_URL = `${BASE_URL}/products`;
 const POSTS_API_URL = `${BASE_URL}/posts`;
 
@@ -55,15 +55,15 @@ const SuggestedProductsSection = () => {
 
     return (
         <section className="mt-5 pt-5 border-top">
-            <h2 className="display-6 fw-bold text-center text-success mb-4">✨ Prodotti Consigliati per Te</h2>
+            <h2 className="display-6 fw-bold text-center text-success mb-4"> Phone G One, <span> <i> semplicemente gaming</i></span></h2>
             <Row className="g-4">
                 {suggestedProducts.map((product) => (
                     <Col key={product._id} xs={12} sm={6} md={12}>
-                        <Card className="h-100 shadow-sm border-success transition-shadow">
+                        <Card className="h-100 bg-black shadow-sm border-success transition-shadow">
                             <Card.Img 
                                 variant="top" 
                                 src={product.imageUrl} 
-                                style={{ height: '180px', objectFit: 'cover' }} 
+                                style={{ height: '260px', objectFit: 'cover' }} 
                                 alt={product.name}
                             />
                             <Card.Body className="d-flex flex-column">
