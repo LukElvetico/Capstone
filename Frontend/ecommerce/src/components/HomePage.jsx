@@ -350,7 +350,7 @@ const HomePage = () => {
             
             <header className="text-center mb-5">
                 <h1 className="display-4 fw-bolder text-primary">Welcome in EpiCommerce</h1>
-                <p className="lead mt-3 text-muted">Crea lo smartphone dei tuoi sogni e scopri cosa dicono gli altri clienti!</p>
+                <p className="lead mt-3 text-muted">Crea lo smartphone dei tuoi sogni ed entra a far parte della nostra community!</p>
             </header>
             <SuggestedProductsSection/>
             <ProductCarouselSection />
