@@ -58,7 +58,7 @@ const SuggestedProductsSection = () => {
 
     return (
         <section className="mt-5 pt-5 border-top" data-aos="fade-up">
-            <h2 className="display-6 fw-bold text-center text-success mb-4"> Phone G One, <span> <i> semplicemente gaming</i></span></h2>
+            <h2 style={{ color: '#787cc7ca' }} className="display-6 fw-bold text-center mb-4"> Phone G One, <span> <i> semplicemente gaming</i></span></h2>
             <Row className="g-4 justify-content-center">
                 {suggestedProducts.map((product) => (
                     <Col key={product._id} xs={12} sm={6} md={10} className="mx-auto">
