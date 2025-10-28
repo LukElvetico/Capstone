@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios'; 
 import { formatDistanceToNow, isValid } from 'date-fns'; 
 import { it } from 'date-fns/locale';
+import aos from 'aos';
+import 'aos/dist/aos.css';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const PRODUCTS_API_URL = `${BASE_URL}/products`;
@@ -335,6 +337,12 @@ const CallToActionSection = () => (
 );
 
 const HomePage = () => {
+    useEffect(() => {
+        aos.init({
+            duration:1000,
+            once:true,
+        });
+        })
     
     return (
         <Container className="my-5 p-3 p-md-5 bg-white rounded shadow">
