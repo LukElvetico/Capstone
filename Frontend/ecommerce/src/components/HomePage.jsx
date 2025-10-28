@@ -344,7 +344,7 @@ const HomePage = () => {
                 <h1 className="display-4 fw-bolder text-primary">Welcome in EpiCommerce</h1>
                 <p className="lead mt-3 text-muted">Crea lo smartphone dei tuoi sogni e scopri cosa dicono gli altri clienti!</p>
             </header>
-            <SuggestedCarouselSelection/>
+            <SuggestedProductsSection/>
             <ProductCarouselSection />
             <RandomPostSection />
             <CallToActionSection />
