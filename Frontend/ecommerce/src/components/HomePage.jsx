@@ -58,7 +58,7 @@ const SuggestedProductsSection = () => {
             <h2 className="display-6 fw-bold text-center text-success mb-4"> Phone G One, <span> <i> semplicemente gaming</i></span></h2>
             <Row className="g-4">
                 {suggestedProducts.map((product) => (
-                    <Col key={product._id} xs={12} sm={6} md={12}>
+                    <Col key={product._id} xs={12} sm={6} md={10}>
                         <Card className="h-100 bg-black shadow-sm border-success transition-shadow">
                             <Card.Img 
                                 variant="top" 
@@ -68,11 +68,11 @@ const SuggestedProductsSection = () => {
                             />
                             <Card.Body className="d-flex flex-column">
                                 <Card.Title className="h6 text-success">{product.name}</Card.Title>
-                                <Card.Text className="small text-muted mb-3 flex-grow-1">
+                                <Card.Text className="small text-white mb-3 flex-grow-1">
                                     {product.description.substring(0, 50)}...
                                 </Card.Text>
                                 <div className="mt-auto">
-                                    <p className="fw-bold text-primary mb-2">€{product.basePrice.toFixed(2)}</p>
+                                    <p className="fw-bold text-primary mb-2"> <span className="text-white"><i>a partire da</i></span> €{product.basePrice.toFixed(2)}</p>
                                     <Button 
                                         as={Link} 
                                         to={`/shop/${product._id}`} 
@@ -80,7 +80,7 @@ const SuggestedProductsSection = () => {
                                         size="sm"
                                         className="w-100"
                                     >
-                                        Vedi Dettagli
+                                        Scopri di più
                                     </Button>
                                 </div>
                             </Card.Body>
