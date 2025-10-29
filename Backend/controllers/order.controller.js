@@ -3,7 +3,7 @@ import User from '../models/User.js';
 import Cart from '../models/Cart.js'; 
 import asyncHandler from 'express-async-handler';
 
-e/*xport const createOrderFromCart = asyncHandler(async (req, res) => {
+export const createOrderFromCart = asyncHandler(async (req, res) => {
     const userId = req.user._id;
     const { paymentMethod, shippingAddress } = req.body; 
 
@@ -49,10 +49,10 @@ e/*xport const createOrderFromCart = asyncHandler(async (req, res) => {
         message: 'Ordine creato con successo. Utente abilitato alla community.',
         order: order,
     });
-});*/
+});
 
 
-export const getMyOrders = asyncHandler(async (req, res) => {
+/*export const getMyOrders = asyncHandler(async (req, res) => {
     const orders = await Order.find({ user: req.user._id })
         .sort({ createdAt: -1 });
 
@@ -73,4 +73,4 @@ export const getOrderById = asyncHandler(async (req, res) => {
     }
 
     res.status(200).json(order);
-});
+});*/
