@@ -10,9 +10,6 @@ import {
 
 } from '../controllers/order.controller.js'; 
 
-router.route('/')
-    .post(protect, createOrderFromCart); 
-
 router.route('/me')
     .get(protect, getMyOrders);
 
