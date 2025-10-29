@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext'; 
 import axios from 'axios';
 
-const API_URL = 'http://localhost:4000/api/products'; 
+const API_URL = `${axios.defaults.baseURL}/products`; 
 const ProductUploadPage = () => {
     const { user } = useAuth();
     
