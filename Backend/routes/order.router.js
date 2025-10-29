@@ -4,7 +4,6 @@ const router = express.Router();
 import { protect, admin } from '../middleware/auth.middleware.js';
 
 import { 
-    createOrderFromCart,
     getMyOrders, 
     getOrderById,
 
