@@ -10,8 +10,8 @@ const OptionSchema = new mongoose.Schema({
 const OptionGroupSchema = new mongoose.Schema({
     groupName: { type: String, required: true }, 
     options: [OptionSchema],
-    minSelection: { type: Number, default: 1 },
-    maxSelection: { type: Number, default: 1 },
+    minSelection: { type: Number, default: 0 },
+    maxSelection: { type: Number, default: 10 },
 });
 
 const CompatibilityRuleSchema = new mongoose.Schema({
